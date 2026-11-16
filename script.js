@@ -3,6 +3,29 @@ const siteNav = document.querySelector(".site-nav");
 const navLinks = document.querySelectorAll(".nav-link");
 const contactForm = document.querySelector(".contact-form");
 const formMessage = document.querySelector(".form-message");
+const themeToggle = document.querySelector(".theme-toggle");
+
+const savedTheme = localStorage.getItem("theme");
+const initialTheme = savedTheme === "dark" ? "dark" : "light";
+document.documentElement.dataset.theme = initialTheme;
+
+const updateThemeToggle = (theme) => {
+  const isDark = theme === "dark";
+  themeToggle.setAttribute("aria-label", `${isDark ? "라이트" : "다크"} 모드로 전환`);
+  themeToggle.setAttribute("aria-pressed", String(isDark));
+  themeToggle.title = `${isDark ? "라이트" : "다크"} 모드로 전환`;
+  themeToggle.querySelector("span").textContent = isDark ? "☀" : "☾";
+};
+
+if (themeToggle) {
+  updateThemeToggle(initialTheme);
+  themeToggle.addEventListener("click", () => {
+    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = nextTheme;
+    localStorage.setItem("theme", nextTheme);
+    updateThemeToggle(nextTheme);
+  });
+}
 
 menuToggle?.addEventListener("click", () => {
   const isOpen = siteNav.classList.toggle("is-open");
